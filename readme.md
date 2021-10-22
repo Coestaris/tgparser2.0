@@ -1,6 +1,6 @@
 # Telegram Parser v2.0
 
-Migrate sample command
+Basic installation be like:
 
 ```shell
 sudo apt install python3 # if needed
