@@ -20,4 +20,7 @@ Then you can run local server with your statistics. Example
 python3 --verbose --sqlite --database parser.db server
 ```
 
+Then it will appear available in
+http://localhost:8000/
+
 Use `--help` or `-h` flags to get more information about available options.
