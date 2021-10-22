@@ -12,12 +12,12 @@ pip3 install -r requirements.txt
 Then you need to transform telegram export into more FRIENDLY format using `migrate` subcommand. Example:
 
 ```shell
-python3 --verbose --sqlite --database parser.db migrate <path-to-telegram-export-directory>
+python3 main.py --verbose --sqlite --database parser.db migrate <path-to-telegram-export-directory>
 ```
 
 Then you can run local server with your statistics. Example
 ```shell
-python3 --verbose --sqlite --database parser.db server
+python3 main.py --verbose --sqlite --database parser.db server
 ```
 
 Then it will appear available in
