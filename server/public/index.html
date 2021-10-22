@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js"
+            integrity="sha512-Wt1bJGtlnMtGP0dqNFH1xlkLBNpEodaiQ8ZN5JLA5wpc1sUlk/O5uuOMNgvzddzkpvZ9GLyYNa8w2s7rqiTk5Q=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js"></script>
+    <script src="js/queries.js" type="application/javascript"></script>
+    <script src="js/fillData.js" type="application/javascript"></script>
+    <script src="js/charts.js" type="application/javascript"></script>
+    <link href="css/main.css" rel="stylesheet">
+    <link href="css/modal.css" rel="stylesheet">
+    <title>Статистика!</title>
+</head>
+<body data-spy="scroll" data-target="#main-navbar" data-offset="0">
+
+<div id="loader">
+<div class="container-fluid pt-5">
+    <div class="card col-9 text-center mx-auto justify-content-center">
+        <div class="row text-center pt-5">
+            <div class="col-8 m-auto text-center">
+                <h3 class="pb-5">Получаем данные с сервера</h3>
+                <p class="lead">Это может занять несколько ЧАСОВ. Медлено, но уверенно!</p>
+                <div class="progress">
+                    <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width:0%"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4 pb-5">
+            <div class="col-auto m-auto">
+                <ul class="list-group" id="progress-list">
+                </ul>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+<div id="data">
+<div class="container">
+    <div class="row">
+        <div class="text-center col-xs-6 col-sm-10 col-md-5 p-3 mx-auto">
+            <img id="main-profile-photo"
+                 alt="Profile photo"
+                 src="images/default.png"
+                 class="center-block img-thumbnail rounded popup-image">
+        </div>
+    </div>
+
+    <div class="container text-center">
+        <div class="col-md-12">
+            <h1 class="lead">
+                <span id="personals-first-name"></span>
+                <span id="personals-last-name"></span>
+                <span id="personals-user-id" class="text-muted"></span>
+            </h1>
+
+            <p class="lead">
+                <span id="personals-phone-number"></span>
+                <span id="personals-username-div">
+                        <span>|</span>
+                        <span id="personals-username"></span>
+                    </span>
+            </p>
+
+            <hr class="separator">
+        </div>
+
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12 text-center">
+            <figure id="personals-bio-row" class="center-block mx-auto">
+                <blockquote class="blockquote">
+                    <p id="personals-bio"></p>
+                </blockquote>
+                <figcaption class="blockquote-footer">
+                    Ваше Био
+                </figcaption>
+            </figure>
+        </div>
+    </div>
+</div>
+
+<br>
+<div class="row">
+    <div id="sub-images-row" class="col-md-8 header sub-images-row">
+    </div>
+</div>
+
+
+
+<div id="modal-container" class="my-popup-modal">
+    <span id="modal-close" class="my-popup-modal-close">&times;</span>
+    <img id="modal-image" class="my-popup-modal-content" src="images/default.png" alt="modal">-->
+    <p id="modal-caption" class="my-popup-modal-caption"></p>
+</div>
+
+<br>
+<br>
+
+<div class="row pt-3">
+    <div class="col-md-3 col-lg-3 col-xl-2">
+        <nav id="main-navbar"
+             class="navbar w-100 rounded-3 sticky-top flex-column align-items-stretch navbar-light bg-transparent px-3">
+            <a class="navbar-brand" href="#">
+<!--                <img src="favicon.ico" alt="" width="24" height="24">-->
+                Навигация
+            </a>
+            <nav class="nav nav-pills flex-column">
+                <a class="nav-link ms-3 my-1" href="#item-general">Общее</a>
+                <a class="nav-link ms-3 my-1" href="#item-time">Время</a>
+                <a class="nav-link ms-3 my-1" href="#item-media">Медиа</a>
+                <a class="nav-link ms-3 my-1" href="#item-text">Текст</a>
+                <a class="nav-link ms-3 my-1" href="#item-chats">Чаты</a>
+                <a class="nav-link ms-3 my-1" href="#item-others">Остальное</a>
+            </nav>
+
+            <div class="col pt-2">
+                <div class="card rounded-3">
+                    <h5 class="text-center card-title p-3">Фильтр статистики<abbr title="Для разделов 'общее', 'время', 'медиа' и 'текст'">*</abbr></h5>
+                    <div class="m-2">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" value="" checked id="allow-personals">
+                            <label class="form-check-label" for="allow-personals">
+                                Личные переписки
+                            </label>
+                        </div>
+
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" value="" id="allow-private-chats">
+                            <label class="form-check-label" for="allow-private-chats">
+                                Приватные чаты
+                            </label>
+                        </div>
+
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" value="" id="allow-public-chats">
+                            <label class="form-check-label" for="allow-public-chats">
+                                Публичные чаты
+                            </label>
+                        </div>
+
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" value="" id="allow-bots">
+                            <label class="form-check-label" for="allow-bots">
+                                Чаты c ботами
+                            </label>
+                        </div>
+
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" value="" id="allow-publics">
+                            <label class="form-check-label" for="allow-publics">
+                                Приватные/публичные паблики
+                            </label>
+                        </div>
+
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" value="" id="select-chat">
+                            <label class="form-check-label" for="select-chat">
+                                Выбрать чат
+                            </label>
+                        </div>
+
+                        <div class="p-2">
+                            <select class="form-select" name="pets" id="chat-selection" disabled="disabled">
+                                <option selected>Чат</option>
+                            </select>
+                        </div>
+                        <span>Входящие от:</span>
+                        <div class="p-2">
+                            <select class="form-select" name="pets" id="member-selection" disabled="disabled">
+                                <option selected>Все пользователи</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="card-footer bg-transparent text-center">
+                        <button class="btn-primary" id="recalc-btn">Обновить</button>
+
+                    </div>
+                    <div class="progress">
+                        <div id="progress-bar-mini" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width:52%"></div>
+                    </div>
+                </div>
+            </div>
+
+        </nav>
+    </div>
+
+    <div class="col-md-9 col-sm-11">
+        <div>
+            <h3 class="text-center" id="item-general" style="padding-top: 4rem !important;">Общее</h3>
+
+            <div class="row row-cols-xs-1 row-cols-md-2 row-cols-lg-3 g-4 pt-2 pb-4">
+                <div class="col">
+                    <div class="card text-center rounded-3">
+                        <div class="card-body">
+                            <h5 class="card-title">С момента первого сообщения</h5>
+                            <h1 class="card-text mt-4" id="time-in-telegram">42 ч.</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card text-center rounded-3">
+                        <div class="card-body">
+                            <h5 class="card-title">В день вы пишите<abbr title="Среднее за все время в выбранных чатах">*</abbr></h5>
+                            <h1 class="card-text mt-4" id="messages-in-day">221</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card text-center rounded-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Сообщений всего<abbr title="В выбранных чатах в формате отправленные/полученные">*</abbr></h5>
+                            <h1 class="card-text mt-4"><span id="total-sent">6512</span> <span class="text-secondary">/</span> <span id="total-received">6512</span></h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="separator">
+            <h3 class="text-center pt-5" id="item-time">Время</h3>
+            <div class="row">
+                <div class="col">
+                    <canvas id="chart-all-time"></canvas>
+                </div>
+            </div>
+            <div class="row row-cols-xs-1 row-cols-md-1 row-cols-lg-2 g-4 pt-2 pb-4">
+                <div class="col">
+                    <canvas id="chart-time"></canvas>
+                </div>
+                <div class="col">
+                    <canvas id="chart-day"></canvas>
+                </div>
+                <div class="col">
+                    <canvas id="chart-month"></canvas>
+                </div>
+                <div class="col pb-5">
+                    <canvas id="chart-year"></canvas>
+                </div>
+            </div>
+
+
+            <hr class="separator">
+
+            <h3 class="text-center pt-5" id="item-media">Медиа</h3>
+            <div class="row row-cols-xs-1 row-cols-md-1 row-cols-lg-2 g-4 pt-2 pb-4">
+                <div class="col">
+                    <canvas id="chart-output-media-types"></canvas>
+                </div>
+                <div class="col">
+                    <canvas id="chart-input-media-types"></canvas>
+                </div>
+
+
+            </div>
+
+            <div class="row row-cols-xs-1 row-cols-md-2 row-cols-lg-4 g-4 pt-2 pb-4">
+                <div class="col">
+                    <div class="card text-center rounded-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Количество звонков<abbr title="Количество всех звонков">*</abbr></h5>
+                            <h1 class="card-text mt-4"><span id="calls-count">52</span></h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card text-center rounded-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Среднее время звонка<abbr title="Средняя длина всех звонков за все время в формате входящие/исходящие">*</abbr></h5>
+                            <h1 class="card-text mt-4"><span id="calls-duration">52</span></h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card text-center rounded-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Средняя длина видео<abbr title="Средняя длина видео в выбранных чатах за все время в формате отправленные/полученные">*</abbr></h5>
+                            <h1 class="card-text mt-4"><span id="video-output-duration">52</span> <span class="text-secondary">/</span> <span id="video-input-duration">52</span></h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card text-center rounded-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Средняя длина аудио<abbr title="Средняя длина аудио в выбранных чатах за все время в формате отправленные/полученные">*</abbr></h5>
+                            <h1 class="card-text mt-4"><span id="audio-output-duration">52</span> <span class="text-secondary">/</span> <span id="audio-input-duration">52</span></h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card text-center rounded-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Средний размер изображений<abbr title="Средний размер изображений в выбранных чатах за все время всех чатах в формате отправленные/полученные">*</abbr></h5>
+                            <h1 class="card-text mt-4"><span id="image-x-size">52</span> <span class="text-secondary">x</span> <span id="image-y-size">52</span></h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card text-center rounded-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Средняя длина войсов<abbr title="Средняя длина войсов в выбранных чатах в формате отправленные/полученные">*</abbr></h5>
+                            <h1 class="card-text mt-4"><span id="voice-output-duration">52</span> <span class="text-secondary">/</span> <span id="voice-input-duration">52</span></h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col pb-5">
+                    <div class="card text-center rounded-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Средняя длина видео-сообщений<abbr title="Средняя длина видео-сообщений в выбранных чатах в формате отправленные/полученные">*</abbr></h5>
+                            <h1 class="card-text mt-4"><span id="video-voice-output-duration">52</span> <span class="text-secondary">/</span> <span id="video-voice-input-duration">52</span></h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col pb-5">
+                    <div class="card text-center rounded-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Ссылок<abbr title="Количество ссылок в выбранных чатах в формате отправленные/полученные">*</abbr></h5>
+                            <h1 class="card-text mt-4"><span id="links-output">52</span> <span class="text-secondary">/</span> <span id="links-input">52</span></h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="separator">
+
+            <h3 class="text-center pt-5 pb-2" id="item-text">Текст</h3>
+
+            <div class="row row-cols-xs-1 row-cols-md-1 row-cols-lg-2 g-4 pt-2 pb-4">
+                <div class="col">
+                    <h5 class="text-center pt-2">Самые часто отправляемые слова</h5>
+                    <table class="table table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Слово</th>
+                            <th scope="col">Кол-во</th>
+                            <th scope="col">Процент от всех</th>
+                        </tr>
+                        </thead>
+                        <tbody id="table-text-output">
+                            <tr><th scope="row">1</th><td>Mark</td><td>512</td><td>6%</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="row pb-5 align-items-center">
+                        <div class="col-auto">
+                            <label class="col-form-label" for="chats-count">
+                                Показать:
+                            </label>
+                        </div>
+                        <div class="col-3">
+                            <select class="form-select form-control col-1" name="pets" id="words-count">
+                                <option>20</option>
+                                <option selected>50</option>
+                                <option>100</option>
+                                <option>200</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <h5 class="pt-2 text-center">Самые часто получаемые слова</h5>
+                    <table class="table table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Слово</th>
+                            <th scope="col">Кол-во использований</th>
+                            <th scope="col">Процент от всех</th>
+                        </tr>
+                        </thead>
+                        <tbody id="table-text-input">
+                             <tr><th scope="row">1</th><td>Mark</td><td>512</td><td>6%</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col">
+                    <h5 class="pt-2 text-center">Самые часто отправляемые маты</h5>
+                    <table class="table table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Слово</th>
+                            <th scope="col">Кол-во использований</th>
+                            <th scope="col">Процент от всех</th>
+                        </tr>
+                        </thead>
+                        <tbody id="table-mats-output">
+                            <tr><th scope="row">1</th><td>Mark</td><td>512</td><td>6%</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="row pb-5 align-items-center">
+                        <div class="col-auto">
+                            <label class="col-form-label" for="chats-count">
+                                Показать:
+                            </label>
+                        </div>
+                        <div class="col-3">
+                            <select class="form-select form-control col-1" name="pets" id="mats-count">
+                                <option selected>10</option>
+                                <option>20</option>
+                                <option>50</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <h5 class="pt-2 text-center">Самые часто получаемые маты</h5>
+                    <table class="table table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Слово</th>
+                            <th scope="col">Кол-во использований</th>
+                            <th scope="col">Процент от всех</th>
+                        </tr>
+                        </thead>
+                        <tbody id="table-mats-input">
+                            <tr><th scope="row">1</th><td>Mark</td><td>512</td><td>6%</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col">
+                    <h5 class="pt-2 text-center">Самые часто отправляемые Эмодзи</h5>
+                    <table class="table table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Эмодзи</th>
+                            <th scope="col">Кол-во использований</th>
+                            <th scope="col">Процент от всех</th>
+                        </tr>
+                        </thead>
+                        <tbody id="table-emoji-output">
+                        <tr><th scope="row">1</th><td>Mark</td><td>512</td><td>6%</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="row pb-5 align-items-center">
+                        <div class="col-auto">
+                            <label class="col-form-label" for="chats-count">
+                                Показать:
+                            </label>
+                        </div>
+                        <div class="col-3">
+                            <select class="form-select form-control col-1" name="pets" id="emoji-count">
+                                <option selected>10</option>
+                                <option>20</option>
+                                <option>50</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <h5 class="pt-2 text-center">Самые часто получаемые Эмодзи</h5>
+                    <table class="table table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Эмодзи</th>
+                            <th scope="col">Кол-во использований</th>
+                            <th scope="col">Процент от всех</th>
+                        </tr>
+                        </thead>
+                        <tbody id="table-emoji-input">
+                            <tr><th scope="row">1</th><td>Mark</td><td>512</td><td>6%</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="row row-cols-xs-1 row-cols-md-2 row-cols-lg-4 g-4 pt-2 pb-4">
+                <div class="col">
+                    <div class="card text-center rounded-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Количество слов 'Привет'<abbr title="В выбранных чатах в формате отправленные/полученные">*</abbr></h5>
+                            <h1 class="card-text mt-4"><span id="hello-output">211</span> <span class="text-secondary">/</span> <span id="hello-input">211</span></h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card text-center rounded-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Количество Эмодзи<abbr title="В выбранных чатах в формате отправленные/полученны">*</abbr></h5>
+                            <h1 class="card-text mt-4"><span id="emoji-output">211</span> <span class="text-secondary">/</span> <span id="emoji-input">211</span></h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card text-center rounded-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Cамый популярный стикер<abbr title="Его Емодзи. В выбранных чатах в формате отправленные/полученны">*</abbr></h5>
+                            <h1 class="card-text mt-4"><span id="sticker-output">211</span> <span class="text-secondary">/</span> <span id="sticker-input">211</span></h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card text-center rounded-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Количество матов<abbr title="В выбранных чатах в формате отправленные/полученны">*</abbr></h5>
+                            <h1 class="card-text mt-4"><span id="mats-output">211</span> <span class="text-secondary">/</span> <span id="mats-input">211</span></h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card text-center rounded-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Среднее количество слов в сообщении<abbr title="В выбранных чатах в формате отправленные/полученны">*</abbr></h5>
+                            <h1 class="card-text mt-4"><span id="words-output">211</span> <span class="text-secondary">/</span> <span id="words-input">211</span></h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card text-center rounded-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Кол-во измененных сообщений<abbr title="В выбранных чатах в формате отправленные/полученны">*</abbr></h5>
+                            <h1 class="card-text mt-4"><span id="edited-output">211</span> <span class="text-secondary">/</span> <span id="edited-input">211</span></h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card text-center rounded-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Само-удаляющихся сообщений<abbr title="В выбранных чатах в формате отправленные/полученны">*</abbr></h5>
+                            <h1 class="card-text mt-4"><span id="self-output">211</span> <span class="text-secondary">/</span> <span id="self-input">211</span></h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card text-center rounded-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Отправленных с помощью ботов<abbr title="В выбранных чатах в формате отправленные/полученны">*</abbr></h5>
+                            <h1 class="card-text mt-4"><span id="bots-output">211</span> <span class="text-secondary">/</span> <span id="bots-input">211</span></h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card text-center rounded-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Реплаев<abbr title="В выбранных чатах в формате отправленные/полученны">*</abbr></h5>
+                            <h1 class="card-text mt-4"><span id="reply-output">211</span> <span class="text-secondary">/</span> <span id="reply-input">211</span></h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col pb-5">
+                    <div class="card text-center rounded-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Пересланных сообщений<abbr title="В выбранных чатах в формате отправленные/полученны">*</abbr></h5>
+                            <h1 class="card-text mt-4"><span id="forward-output">211</span> <span class="text-secondary">/</span> <span id="forward-input">211</span></h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="separator">
+
+            <h3 class="text-center pt-5" id="item-chats">Чаты</h3>
+            <h5 class="pt-2 text-center">Вписок всех Ваших чатов</h5>
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Название/Имя</th>
+                    <th scope="col">ID</th>
+                    <th scope="col">Тип</th>
+                    <th scope="col">Кол-во сообщений</th>
+                </tr>
+                </thead>
+                <tbody id="chats-table">
+                </tbody>
+            </table>
+
+            <div class="row pb-5 align-items-center">
+                <div class="col-auto">
+                    <label class="col-form-label" for="chats-count">
+                        Показать:
+                    </label>
+                </div>
+                <div class="col-3">
+                    <select class="form-select form-control col-1" name="pets" id="chats-count">
+                        <option selected>20</option>
+                        <option>50</option>
+                        <option>100</option>
+                        <option>200</option>
+                        <option>Все</option>
+                    </select>
+                </div>
+            </div>
+
+            <hr class="separator">
+
+            <h3 class="text-center pt-5" id="item-others">Остальное</h3>
+
+            <div class="row row-cols-xs-1 row-cols-md-1 row-cols-lg-2 g-4 pt-2 pb-4">
+                <div class="col">
+                    <h5 class="text-center pt-2">Частые контакты</h5>
+                    <table class="table table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Имя</th>
+                            <th scope="col">Тип</th>
+                            <th scope="col">Рейтинг</th>
+                        </tr>
+                        </thead>
+                        <tbody id="freq-contacts-table">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col">
+                    <h5 class="pt-2 text-center">Установленные стикеры</h5>
+                    <table class="table table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Ссылка</th>
+                        </tr>
+                        </thead>
+                        <tbody id="installed-sticker-table">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col">
+                    <h5 class="pt-2 text-center">Созданные стикеры</h5>
+                    <table class="table table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Ссылка</th>
+                        </tr>
+                        </thead>
+                        <tbody id="created-stickers-table">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col">
+                    <h5 class="pt-2 text-center">IP входа в телеграм</h5>
+                    <table class="table table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">IP адрес</th>
+                        </tr>
+                        </thead>
+                        <tbody id="ips-table">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+</body>
+</html>

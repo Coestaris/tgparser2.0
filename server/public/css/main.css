@@ -1,0 +1,53 @@
+body {
+    overflow-x: hidden;
+}
+
+.separator {
+    width: 20%;
+    height:1px;
+    border-width:0;
+    color:gray;
+    background-color:gray;
+    margin: auto
+}
+
+.row-photo {
+    float: left;
+    width: inherit;
+    padding: 5px;
+}
+
+.row-photo-container {
+    vertical-align: top;
+    display: inline-block;
+    text-align: center;
+    width: 120px;
+}
+
+.row-photo-label {
+    display: block;
+    font-size: 10pt;
+}
+
+.sub-images-row {
+    align-items: center;
+    margin: auto;
+    display: flex;
+    overflow-x: scroll;
+}
+
+.popup-image,
+.card{
+    /*border-radius: 4px;*/
+    background: #fff;
+    box-shadow: 0 6px 10px rgba(0,0,0,.08), 0 0 6px rgba(0,0,0,.05);
+    transition: .3s transform cubic-bezier(.155,1.105,.295,1.12),.3s box-shadow,.3s -webkit-transform cubic-bezier(.155,1.105,.295,1.12);
+    /*padding: 14px 80px 18px 36px;*/
+    /*cursor: pointer;*/
+}
+
+.popup-image:hover,
+.card:hover{
+    transform: scale(1.02);
+    box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+}
