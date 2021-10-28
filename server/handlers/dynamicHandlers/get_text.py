@@ -10,7 +10,7 @@ from emoji import emoji_lis
 
 reSplitter = re.compile(r'''\s|[.,!@#$%^&*()<>?\"'[\]\-+=:{}`~_;]''')
 reLink = re.compile(r'''<link#\d+>''')
-reMat = re.compile(r'''(бля(ть)?)|(сука)|(пизд)|(eб[лаoe])|(eбну)|(ху[йeё])|(говн)|(уеб)''')
+reMat = re.compile(r'''(бля(ть)?)|(су(ч)?к[аи])|(пизд)|(eб[лаoe])|(eбну)|(ху[йeё])|(говн)|(уеб)''')
 
 
 def dict_inc(dict, txt):

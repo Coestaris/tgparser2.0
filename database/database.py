@@ -36,7 +36,7 @@ class DB:
             data VARCHAR NOT NULL
             ''')
         self.create_table('contacts', '''
-            first_name VARCHAR NOT NULL,
+            first_name VARCHAR,
             last_name VARCHAR,
             phone_number VARCHAR NOT NULL,
             date TIMESTAMP NOT NULL
@@ -145,6 +145,8 @@ class DB:
 
     def _fill_created_stickers(self, data):
         data = data['other_data']
+        if 'created_stickers' not in data:
+        	return 
         for item in data['created_stickers']:
             self._fill_row('created_stickers', item)
         self.model.commit()
@@ -163,16 +165,34 @@ class DB:
 
     def _fill_drafts(self, data):
         data = data['other_data']
+        if 'other_data' not in data:
+        	return 
         for item in data['drafts']:
             self._fill_row('drafts', item)
         self.model.commit()
 
     def _fill_chats(self, data):
+        full_data = data
         data = data['chats']
 
         for index, item in enumerate(data['list']):
             item['id_key'] = index
             item['messages_count'] = len(item['messages'])
+            
+            if ('name' not in item or item['name'] is None) and item['type'] == 'personal_chat':
+
+                first_name = full_data['personal_information']['first_name']
+                last_name = full_data['personal_information']['last_name']
+                personal_name = first_name
+                if last_name is not None:
+                    personal_name += " " + last_name
+            
+                for message in item['messages']:
+                    if message['type'] == 'message' and message['from'] is not None and message['from'] != personal_name:
+                        item['name'] = message['from']
+                        print(item['name'])
+                        break
+            		
             item = {i: item[i] for i in item if i != 'messages'}
             self._fill_row('chats', item)
         self.model.commit()
